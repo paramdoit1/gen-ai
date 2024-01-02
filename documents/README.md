@@ -1,6 +1,6 @@
 # Generative AI documentation
 
-                        ## Table Of Contents
+                        <div align="center"> Table Of Contents</div>
 [Introduction](./topics/introduction.md)
 
 [Prompt Engineering](./topics/prompt_engineering.md)
