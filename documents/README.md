@@ -6,3 +6,5 @@
 [Prompt Engineering](./topics/prompt_engineering.md)
 
 [Large Language Models](./topics/LLM.md)
+
+[Vector Databases](./topics/vector_database.md)
