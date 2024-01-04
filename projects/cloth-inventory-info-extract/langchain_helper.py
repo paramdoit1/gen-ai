@@ -26,11 +26,6 @@ def get_few_short_db_chain():
     llm = GooglePalm(google_api_key=google_api_key)
     llm.temperature = 0.1
 
-    db_chain = SQLDatabaseChain.from_llm(llm, db, verbose=True)
-    #qns1 = db_chain("what is stock quantity of  Nike t-shirts do we have in extra small size and white color?")
-   # query = "SELECT sum(st  ock_quantity) FROM atliq_tshirts.t_shirts where brand = 'Nike';"
-    #qns2 = db_chain(query)
-
     embeddings = HuggingFaceEmbeddings(model_name = 'sentence-transformers/all-MiniLM-L6-v2')
 
     to_vectorize = [" ".join(example.values()) for example in few_shorts.few_shots]
@@ -55,12 +50,7 @@ def get_few_short_db_chain():
         )
     chain = SQLDatabaseChain.from_llm(llm, db, verbose=True, prompt=few_shot_prompt)
     return chain
-    # print(chain)
-    # prompts = ['Explain the difference between effective and affective with examples']
-    # llm_result = llm._generate(prompts)
-
-    #print(llm_result.generations[0][0].text)
-
+    
 if __name__ =='__main__':
     chain= get_few_short_db_chain()
     print(chain.run("How many white color Levi\'s  small shirt I have?"))

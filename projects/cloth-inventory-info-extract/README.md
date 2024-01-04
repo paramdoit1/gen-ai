@@ -1,5 +1,8 @@
 # Charm Clothing Center Information Provider
 
+## Application Architecture: 
+![Architecture](./images/Genai-proj-arch.jpg)
+
 ### Question & Answer 1:
 ![Screen](./images/question_answer3.jpg)
 ### Question & Answer 1 Execution Flow:
