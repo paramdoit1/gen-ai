@@ -23,13 +23,7 @@ llm = GooglePalm(google_api_key = os.environ["GOOGLE_API_KEY"], temperature = 0.
 
 st.title('News Research Application 📰')
 
-#st.sidebar.title("News Article URL's")
-
 urls =[]
-
-#for i in range(3):
-    #url = st.sidebar.text_input(f"URL{i+1}")
-    #urls.append(url)
 
 def load_vector_db():
     main_placeholder = st.empty()
@@ -46,8 +40,7 @@ def load_vector_db():
     f3 = open('E:/mydocs/python/news_extract/files/news3.txt', "r")
     data2 = f2.read()
     data = data + data2
-
-
+    
     main_placeholder.text("Data Loading ....Started.... 💡⏱️⏱️")
     print(data)
 
@@ -60,7 +53,6 @@ def load_vector_db():
     docs = text_splitter.create_documents(pages)
     print(docs)
     main_placeholder.text("Embedding Vector Started Building...✅✅✅")
-
 
     vectordb = FAISS.from_documents(documents=docs, embedding=instructor_embeddings)
     vectordb.save_local(local_store_path)

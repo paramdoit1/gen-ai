@@ -1,4 +1,8 @@
-# News Research Application
+# News Research Application:
+
+## Application Architecture:
+### Retrieval Augmented Generation:
+![Architecture](./images/rag_news_research_arch.jpg)
 
 ### Question & Answer 1:
 ![Screen](./images/question_answer1.jpg)
