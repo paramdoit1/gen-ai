@@ -174,7 +174,6 @@ Embeddings create a vector representation of a piece of text. This is useful bec
 
  ![Embedding](./../images/lang_chain_concepts/text_embeddings.jpg)
 
-
 The base Embeddings class in LangChain provides two methods: one for embedding documents and one for embedding a query. The former takes as input multiple texts, while the latter takes a single text. The reason for having these as two separate methods is that some embedding providers have different embedding methods for documents (to be searched over) vs queries (the search query itself).
 
 ```
@@ -216,6 +215,7 @@ Once the data is in the database, you still need to retrieve it. LangChain suppo
 
 Parent Document Retriever: This allows you to create multiple embeddings per parent document, allowing you to look up smaller chunks but return larger context.
 Self Query Retriever: User questions often contain a reference to something that isn't just semantic but rather expresses some logic that can best be represented as a metadata filter. Self-query allows you to parse out the semantic part of a query from other metadata filters present in the query.
+
 Ensemble Retriever: Sometimes you may want to retrieve documents from multiple different sources, or using multiple different algorithms. The ensemble retriever allows you to easily do this.
 
 ### Indexing
@@ -280,6 +280,7 @@ All sequential chains do not involve passing a single string as an input and get
 The legacy way of using Chains in LangChain is through the Chain interface.
 
 The newer and recommended method is the LangChain Expression Language (LCEL). Although LCEL is preferred for new projects, the Chain method is still useful and supported.
+```
 from langchain.llms import OpenAI
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
@@ -300,9 +301,14 @@ runnable = prompt | model | StrOutputParser()
 for chunk in runnable.stream({"question": "How is machine learning different than deep learning?"}):
     print(chunk, end="", flush=True)
 
+```
+
 Output:
 
->>> Machine learning and deep learning are subfields of artificial intelligence (AI) that involve training models to make predictions or decisions based on data. While there is an overlap between the two, they ……..
+```
+ Machine learning and deep learning are subfields of artificial intelligence (AI) that involve training models to make predictions or decisions based on data. While there is an overlap between the two, they ……..
+
+ ```
 
 The way runnable is created is not pretty standard for Python, but this | is a pipe operator. Prompt | model | StrOutputParser() would mean that Prompt is passed through the model, and the output of that is then passed through StrOutputParser(). Each segment in the chain transforms the data in some way.
 
@@ -319,7 +325,7 @@ Let’s explore a practical scenario where these concepts come together to enabl
 
 Consider an AI-based customer service chatbot. It employs an LLMChain that follows a path:
 
-User Input -> Intent Recognition -> Prompt Selector -> Language Model -> Output Formatter
+``` User Input -> Intent Recognition -> Prompt Selector -> Language Model -> Output Formatter ```
 
 Here, the User Input initiates the interaction. The Intent Recognition component analyzes this input to understand the underlying user intent. The Prompt Selector then curates a suitable prompt based on this intent, guiding the conversation in the desired direction. 
 
@@ -335,10 +341,12 @@ State Updating: Depending on the input and output, the state of the conversation
 
 ### Short-Term Memory
 Short-term memory pertains to the information passing within the context of a singular conversation. This generally includes previous chat messages or summaries of them. The mechanism responsible for managing short-term memory in a conversation is often a class or a function like ChatMessageHistory.
+
 For instance, in Langchain, the ChatMessageHistory class manages all previous chat interactions. It exposes two methods, add_user_message, and add_ai_message, which store user messages and AI responses, respectively. It also reveals a message attribute for accessing all previous messages.
 
 ### Long-Term Memory
 On the other hand, long-term memory is concerned with fetching and updating information across multiple conversations. This is where more complex systems, such as vector stores, come into play.
+
 A vector store is an index that creates numerical embeddings for each document using an Embedding Model. It stores documents and their associated embeddings and provides quick ways to look up relevant documents using these embeddings​.
 
 ### The Importance of Memory in Conversational AI
@@ -362,6 +370,7 @@ Before sending the query to LLM, the system reads from its memory to enhance the
 Once the response is returned by LLM, it writes it to memory for future interactions, before returning the final output to the user.
 To use the Memory feature in LangChain you can use the ConversationBufferMemory class.
 
+```
 from langchain.memory import ConversationBufferMemory
 memory = ConversationBufferMemory(return_messages=True)
 memory.chat_memory.add_user_message("hi!")
@@ -369,8 +378,11 @@ memory.chat_memory.add_ai_message("what's up?")
 memory.chat_memory.add_user_message("how are you doing?")
 memory.chat_memory.add_ai_message("I am fine, thank you and you?")
 
+```
+
 * to check the variables history
   
+```
 memory.load_memory_variables({})
 
 {
@@ -382,6 +394,7 @@ HumanMessage(content='how are you doing?'),
 
 AIMessage(content='I am fine, thank you and you?')]
 }
+```
 
 It returns a dictionary where the key by default is history. This key leads to a list of messages, and these messages can be either from a human (HumanMessage) or from the LLM (AIMessage).
 
