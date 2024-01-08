@@ -29,7 +29,6 @@ def get_few_short_db_chain():
     embeddings = HuggingFaceEmbeddings(model_name = 'sentence-transformers/all-MiniLM-L6-v2')
 
     to_vectorize = [" ".join(example.values()) for example in few_shorts.few_shots]
-    print(to_vectorize)
     vectorstore = Chroma.from_texts(to_vectorize, embeddings, metadatas=few_shorts.few_shots)
     example_selector = SemanticSimilarityExampleSelector(
             vectorstore=vectorstore,

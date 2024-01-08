@@ -1,41 +1,36 @@
 # LangChain Concepts
 
-Langchain is an open-source framework that facilitates the creation of large language model (LLM) based applications and chatbots. It provides a standard interface for interacting with LLMs, as well as a number of features that make it easier to build complex applications.
+Langchain is an open-source framework that facilitates the creation of large language model (LLM) based applications. It provides a standard interface for interacting with LLMs, as well as a number of features that make it easier to build complex applications.
 
- LangChain comprises of several tools that make it very easy to work with Large Language models – the LLM could be ChatGPT, Hugging Face LLM, etc. These components include:
+ LangChain comprises of several tools that make it very easy to work with Large Language models – the LLM could be ChatGPT, Google Palm, Hugging Face LLM, etc. These components include:
 
  ![LangChain Components](./../images/lang_chain_concepts/components.jpg)
 
 ## Model I/O
-The core element of any language model application is...the model. LangChain gives you the building blocks to interface with any language model.
+The core element of any language model application is Model. LangChain gives the building blocks to interface with any language model.
  ![Model IO](./../images/lang_chain_concepts/model_io.jpg)
 
 ### LLMChain
 In Langchain, the LLMChain, or the Language Model (LM) Chain, is a principal element. It is designed to connect a series of components and chains that form a pathway through which data and tasks flow within the AI system. This facilitates a dynamic interaction between different elements of the system, culminating in the execution of the task at hand.
 
+ ![LLM Chain](./../images/lang_chain_concepts/prompt.jpg)
+
 The LLMChain can be visualized as an assembly line in a factory, where different workstations, representing the components, are meticulously linked. Each station performs its specific function, passing on the result to the next in line, thus efficiently accomplishing the overall task.
 
-### Prompt Selector
-The Prompt Selector acts as a critical guiding force within the LLMChain, dictating the direction of a conversation based on a specific context. It curates appropriate prompts to evoke meaningful responses from the language model, thus creating an interactive conversational flow.
-Imagine the Prompt Selector as a proficient chess player, diligently planning each move, foreseeing the potential responses, and thus shaping the course of the game. It sifts through various prompts, selects the most contextually suitable one, and guides the conversation toward meaningful interaction.
+The most basic form of chain within this system is the LLMChain, widely recognized and fundamental. Its operation involves a structured arrangement, including a PromptTemplate, an OpenAI model (either a Large Language Model or a ChatModel), and an optional output parser. Within this setup, the LLMChain accepts various input parameters. It employs the PromptTemplate to transform these inputs into a coherent prompt. This polished prompt is then inputted into the model. After receiving the output, the LLMChain uses the OutputParser, if provided, to further refine and format the result into its ultimate usable form.
 
-### Index
+```
+llm = OpenAI(model_name = 'text-davinci-003',
+              temperature = 0.9,    
+              max_tokens = 256)
+prompt_template_cuisine = PromptTemplate(
+    input_variables =['cuisine'],
+    template = "I want to open a restaurant for {cuisine} food. Suggest me a name"
+)
 
-An ‘index’ within the context of a chain represents a specific position or stage in the sequence of components. It acts as a reference point, indicating where a particular component fits into the overall chain. This concept is essential in organizing the flow of data and tasks within the LLMChain.
+name_chain =  LLMChain(llm=llm, prompt = prompt_template_cuisine)
+```
 
-Indices in a chain can be equated to milestones on a highway, indicating the progress and direction of the journey. They offer clarity on the chain’s structure, guiding the flow of tasks, and ensuring each component is correctly sequenced for optimal functionality.
-Unifying Components and Chains
-
-Let’s explore a practical scenario where these concepts come together to enable LangChain’s advanced functionality:
-
-Consider an AI-based customer service chatbot. It employs an LLMChain that follows a path:
-
-User Input -> Intent Recognition -> Prompt Selector -> Language Model -> Output Formatter
-
-Here, the User Input initiates the interaction. The Intent Recognition component analyzes this input to understand the underlying user intent. The Prompt Selector then curates a suitable prompt based on this intent, guiding the conversation in the desired direction. 
-
-The Language Model processes this prompt and formulates a raw response, which the Output Formatter finally presents as a comprehensive, human-friendly response to the user.
-In this chain, the index of each component would be its position in the sequence, guiding the flow of data and tasks through the system.
 
 ### Prompts:
 
@@ -45,6 +40,7 @@ Prompt templates serve as the foundation for structuring input prompts to LLMs. 
 
 Creating prompt templates in Langchain is straightforward. The library provides the PromptTemplate class, which allows you to define templates with placeholders for input variables.
 
+```
 from langchain import PromptTemplate
 
 template = """
@@ -57,12 +53,16 @@ prompt = PromptTemplate(
     template=template,
     input_variables=['question']
 )
-
+```
 #### Prompt Values:
 
 In the realm of LangChain, a PromptValue is what is eventually passed to the underlying model. This concept is vital to understanding how LangChain interfaces with different AI models, particularly because different models may expect different data formats. The PromptValue class exposes methods that can be converted to the exact input types expected by each model type, such as Text or ChatMessages.
 
 For instance, let’s consider a language translation model that translates English text to Spanish. The English text that we want to translate would be wrapped in a PromptValue object, which is then passed to the model. The model processes the PromptValue and returns the translated text as output.
+
+### Prompt Selector
+The Prompt Selector acts as a critical guiding force within the LLMChain, dictating the direction of a conversation based on a specific context. It curates appropriate prompts to evoke meaningful responses from the language model, thus creating an interactive conversational flow.
+Imagine the Prompt Selector as a proficient chess player, diligently planning each move, foreseeing the potential responses, and thus shaping the course of the game. It shifts through various prompts, selects the most contextually suitable one, and guides the conversation toward meaningful interaction.
 
 #### OutputParsers: Structuring the Model Responses
 Once the model has processed the PromptValue, it returns a text response. However, we often want more structured information than just text. This is where OutputParsers step in. They are responsible for instructing the model how output should be formatted and parsing the output into the desired format
@@ -85,27 +85,130 @@ OutputParsers: The model’s output, perhaps a list of recommended hiking trails
 
 ## Retrieval:
 
-Many LLM applications require user-specific data that is not part of the model's training set. The primary way of accomplishing this is through Retrieval Augmented Generation (RAG). In this process, external data is retrieved and then passed to the LLM when doing the generation step.
+Many LLM applications require user-specific data that is not part of the model's training set. The primary way of accomplishing this is through Retrieval Augmented Generation (RAG. In this process, external data is retrieved and then passed to the LLM when doing the generation step.
 
 LangChain provides all the building blocks for RAG applications - from simple to complex. This section of the documentation covers everything related to the retrieval step - e.g. the fetching of the data. Although this sounds simple, it can be subtly complex. This encompasses several key modules.
 
  ![Retrieval Flow](./../images/lang_chain_concepts/retrieval_flow.jpg)
 
+ ```
+   vector_db = FAISS.load_local(local_store_path, instructor_embeddings)
+    retriever = vector_db.as_retriever(score_threshold = "0.7")
+    prompt_template = """Given the following context and a question, generate an answer based on this context only.
+    In the answer try to provide as much text as possible from "response" section in the source document context without making much changes.
+    If the answer is not found in the context, kindly state "I don't know." Don't try to make up an answer.
+
+    CONTEXT: {context}
+
+    QUESTION: {question}"""
+
+    prompt = PromptTemplate(
+        template = prompt_template,
+        input_variables=["context", "question"]
+    )
+    chain = RetrievalQA.from_chain_type(
+        llm =llm,
+        chain_type="stuff",
+        retriever=retriever,
+        input_key="question",
+        return_source_documents=True,
+        chain_type_kwargs={"prompt": prompt}
+    )
+ ```
+
 ### Document loaders
 
 Document loaders load documents from many different sources. LangChain provides over 100 different document loaders as well as integrations with other major providers in the space, like AirByte and Unstructured. LangChain provides integrations to load all types of documents (HTML, PDF, code) from all types of locations (private S3 buckets, public websites).
+```
+    from langchain.chains import RetrievalQA
+
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from langchain.text_splitter import CharacterTextSplitter
+
+    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+    pages = text_splitter.split_text(data)
+
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+
+    main_placeholder.text("Text Splitter ...Started.... ⏰⏰⏰⏰")
+    docs = text_splitter.create_documents(pages)
+    main_placeholder.text("Embedding Vector Started Building...✅✅✅")
+
+    vectordb = FAISS.from_documents(documents=docs, embedding=instructor_embeddings)
+    vectordb.save_local(local_store_path)
+```
+
+* Loading of CSV documents:
+
+```
+from langchain.document_loaders.csv_loader import CSVLoader
+from langchain.embeddings import HuggingFaceInstructEmbeddings
+
+instructor_embeddings = HuggingFaceInstructEmbeddings()
+loader = CSVLoader(file_path="codebasics_faqs.csv", source_column="prompt")
+data = loader.load()
+
+vectordb = FAISS.from_documents(documents=data, embedding=instructor_embeddings)
+vectordb.save_local(local_store_path)
+```
 
 ### Text Splitting
 
 A key part of retrieval is fetching only the relevant parts of documents. This involves several transformation steps to prepare the documents for retrieval. One of the primary ones here is splitting (or chunking) a large document into smaller chunks. LangChain provides several transformation algorithms for doing this, as well as logic optimized for specific document types (code, markdown, etc).
 
+```
+   from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from langchain.text_splitter import CharacterTextSplitter
+
+    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+    pages = text_splitter.split_text(data)
+
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+```
+
 ### Text embedding models
+
+The Embeddings class is a class designed for interfacing with text embedding models. There are lots of embedding model providers (OpenAI, Cohere, Hugging Face, etc) - this class is designed to provide a standard interface for all of them.
+
+Embeddings create a vector representation of a piece of text. This is useful because it means we can think about text in the vector space, and do things like semantic search where we look for pieces of text that are most similar in the vector space.
+
+ ![Embedding](./../images/lang_chain_concepts/text_embeddings.jpg)
+
+
+The base Embeddings class in LangChain provides two methods: one for embedding documents and one for embedding a query. The former takes as input multiple texts, while the latter takes a single text. The reason for having these as two separate methods is that some embedding providers have different embedding methods for documents (to be searched over) vs queries (the search query itself).
+
+```
+from langchain.embeddings import OpenAIEmbeddings
+embeddings = OpenAIEmbeddings()
+text = "This is a test document."
+query_result = embeddings.embed_query(text)
+query_result[:5]
+
+from langchain.embeddings import HuggingFaceInstructEmbeddings
+instructor_embeddings = HuggingFaceInstructEmbeddings()
+
+```
 
 Another key part of retrieval is creating embeddings for documents. Embeddings capture the semantic meaning of the text, allowing you to quickly and efficiently find other pieces of a text that are similar. LangChain provides integrations with over 25 different embedding providers and methods, from open-source to proprietary API, allowing you to choose the one best suited for your needs. LangChain provides a standard interface, allowing you to easily swap between models.
 
 ### Vector stores
 
 With the rise of embeddings, there has emerged a need for databases to support efficient storage and searching of these embeddings. LangChain provides integrations with over 50 different vectorstores, from open-source local ones to cloud-hosted proprietary ones, allowing you to choose the one best suited for your needs. LangChain exposes a standard interface, allowing you to easily swap between vector stores.
+
+Vector Stores are databases to store vectors. Most popular ones are:
+
+* Pinecone
+* Weaveite
+* FAISS
+* Chroma
+
+Vector Store can be thought of as a table with embeddings and meta data – they will store the embeddings along with the associated metadata and make them easily searchable.
+
+Example:
+
+ ![Vector Store](./../images/lang_chain_concepts/vector_store.jpg)
+
+Storing data in VectorStore
 
 ### Retrievers
 
@@ -144,6 +247,29 @@ An LLMChain is a basic but the most commonly used type of chain. It consists of 
 ### SimpleSequentialChain
 This is the simplest form of a sequential chain, where each step has a singular input/output, and the output of one step is the input to the next. This works well when we have subchains that expect only one input and return only one output.
 
+```
+llm = OpenAI(model_name = 'text-davinci-003',
+              temperature = 0.9,    
+              max_tokens = 256)
+prompt_template_cuisine = PromptTemplate(
+    input_variables =['cuisine'],
+    template = "I want to open a restaurant for {cuisine} food. Suggest me a name"
+)
+
+name_chain =  LLMChain(llm=llm, prompt = prompt_template_cuisine)
+
+prompt_template_food_item = PromptTemplate(
+    input_variables =['restaurant_name'],
+    template = "Suggest some Vegetarian menu items for  {restaurant_name}. Suggest me as list"
+)
+
+food_item_chain =  LLMChain(llm=llm, prompt = prompt_template_food_item)
+
+chain = SimpleSequentialChain(chains=[name_chain,food_item_chain ])
+
+response = chain.run("Mexican")
+```
+
 ### SequentialChain
 All sequential chains do not involve passing a single string as an input and getting a single string as an output. More complex chains involve multiple inputs and multiple final outputs. We will be discussing this in our next example.
 
@@ -181,6 +307,24 @@ Output:
 The way runnable is created is not pretty standard for Python, but this | is a pipe operator. Prompt | model | StrOutputParser() would mean that Prompt is passed through the model, and the output of that is then passed through StrOutputParser(). Each segment in the chain transforms the data in some way.
 
 Want to learn more about interesting use cases and applications that can be built using LangChain? Check out our Engineering and Data Application use-cases blog.
+
+### Index
+
+An ‘index’ within the context of a chain represents a specific position or stage in the sequence of components. It acts as a reference point, indicating where a particular component fits into the overall chain. This concept is essential in organizing the flow of data and tasks within the LLMChain.
+
+Indices in a chain can be equated to milestones on a highway, indicating the progress and direction of the journey. They offer clarity on the chain’s structure, guiding the flow of tasks, and ensuring each component is correctly sequenced for optimal functionality.
+Unifying Components and Chains
+
+Let’s explore a practical scenario where these concepts come together to enable LangChain’s advanced functionality:
+
+Consider an AI-based customer service chatbot. It employs an LLMChain that follows a path:
+
+User Input -> Intent Recognition -> Prompt Selector -> Language Model -> Output Formatter
+
+Here, the User Input initiates the interaction. The Intent Recognition component analyzes this input to understand the underlying user intent. The Prompt Selector then curates a suitable prompt based on this intent, guiding the conversation in the desired direction. 
+
+The Language Model processes this prompt and formulates a raw response, which the Output Formatter finally presents as a comprehensive, human-friendly response to the user.
+In this chain, the index of each component would be its position in the sequence, guiding the flow of data and tasks through the system.
 
 ## Memory:
 Memory in the context of conversational AI is the process of storing and retrieving data during a conversation. This process is typically handled in two ways:

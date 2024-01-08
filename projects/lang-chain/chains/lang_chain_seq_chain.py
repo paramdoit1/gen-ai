@@ -17,16 +17,12 @@ prompt_template_cuisine = PromptTemplate(
     template = "I want to open a restaurant for {cuisine} food. Suggest me a name"
 )
 
-#prompt_template.format(cuisine = "Indian")
-
 name_chain =  LLMChain(llm=llm, prompt = prompt_template_cuisine, output_key="restaurant_name")
 
 prompt_template_food_item = PromptTemplate(
     input_variables =['restaurant_name'],
     template = "Suggest some Vegetarian menu items for  {restaurant_name}. Suggest me as list"
 )
-
-#prompt_template.format(cuisine = "Indian")
 
 food_item_chain =  LLMChain(llm=llm, prompt = prompt_template_food_item, output_key="menu_items")
 
