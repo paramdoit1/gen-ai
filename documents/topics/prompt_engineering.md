@@ -264,6 +264,91 @@ Zero-shot prompting involves generating a response without feeding the large lan
   Text: That shot selection was awesome.
   Classification
 
+  ```
+   def get_prompt_template():
+        return """
+        I want you to play the role of a travel bot and answer the question
+        Return the answer in a json format
+        you should have all the options listed in an array structure. 
+        The root of the array should be named as "options"
+        You should fill up the values yourself
+        remove non-viable or non-feasible options from the json
+        
+        Question: {question}
+        """
+  ```
+  Now let us look at how langchain connects to the LLM, create prompts using the template and fetch the results
+
+```
+
+import os
+from langchain.chat_models import ChatOpenAI
+from langchain.prompts import ChatPromptTemplate
+import json
+
+class ZeroShotUtility:
+    def __init__(self, template, temperature=0):
+        self.template = template
+        self.temperature = temperature
+
+    def __str__(self):
+        return f"{self.template}"
+
+    def print_travel_modes(self, question):
+        prompt_template = ChatPromptTemplate.from_template(self.template)
+        message = prompt_template.format_messages(question=question)
+        llm = ChatOpenAI(temperature=self.temperature, 
+                         openai_api_key=os.getenv("OPENAI_KEY"))
+        response = llm(message)
+        print(response.content)
+```
+As you can see here, we have written a specific function to get the travel modes. Here we are performing the below steps
+
+* Creating the prompt_template object using Langchain framework
+* Formatting it to create the actual prompt by providing the user question as a parameter.
+* Passing the prompt to the OpenAI model (using abstraction from Langchain)
+* Printing the response
+* And here is our calling module
+
+```
+from ai.completion.zeroshotutility import zeroshotutility
+from ai.prompts.zeroshot import zeroshot
+
+if __name__ == '__main__':
+    prompt_template = zeroshot.ZeroShot.get_prompt_template()
+
+    zeroShot = zeroshotutility.ZeroShotUtility(template=prompt_template)
+    question = "How to reach Jersey City from Hoboken?"
+    zeroShot.print_travel_modes(question=question)
+```
+When I run it for the first time, it will generate the following output
+
+```
+{
+  "options": [
+    {
+      "mode": "Train",
+      "duration": "10 minutes",
+      "cost": "$2.75"
+    },
+    {
+      "mode": "Ferry",
+      "duration": "15 minutes",
+      "cost": "$9.00"
+    },
+    {
+      "mode": "Bus",
+      "duration": "20 minutes",
+      "cost": "$1.60"
+    },
+    {
+      "mode": "Taxi",
+      "duration": "5 minutes",
+      "cost": "$10.00"
+    }
+  ]
+}
+```
 ### One-Shot or Few shot Prompting:
 One-shot prompting is about extracting a response based on example or piece of context provided by the user.
 ![Few Shot](./../images/prompting/one-shot.jpg)
