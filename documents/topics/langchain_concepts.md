@@ -85,6 +85,8 @@ OutputParsers: The model’s output, perhaps a list of recommended hiking trails
 
 ## Retrieval:
 
+A retriever is an interface that returns documents given an unstructured query. It is more general than a vector store. A retriever does not need to be able to store documents, only to return (or retrieve) them. Vector stores can be used as the backbone of a retriever, but there are other types of retrievers as well.
+
 Many LLM applications require user-specific data that is not part of the model's training set. The primary way of accomplishing this is through Retrieval Augmented Generation (RAG. In this process, external data is retrieved and then passed to the LLM when doing the generation step.
 
 LangChain provides all the building blocks for RAG applications - from simple to complex. This section of the documentation covers everything related to the retrieval step - e.g. the fetching of the data. Although this sounds simple, it can be subtly complex. This encompasses several key modules.
@@ -115,6 +117,45 @@ LangChain provides all the building blocks for RAG applications - from simple to
         chain_type_kwargs={"prompt": prompt}
     )
  ```
+A vector store retriever is a retriever that uses a vector store to retrieve documents. It is a lightweight wrapper around the vector store class to make it conform to the retriever interface. It uses the search methods implemented by a vector store, like similarity search and MMR, to query the texts in the vector store.
+
+Once you construct a vector store, it’s very easy to construct a retriever. Let’s walk through an example.
+
+```
+from langchain_community.document_loaders import TextLoader
+
+loader = TextLoader("../../state_of_the_union.txt")
+
+from langchain.text_splitter import CharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
+
+documents = loader.load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+texts = text_splitter.split_documents(documents)
+embeddings = OpenAIEmbeddings()
+db = FAISS.from_documents(texts, embeddings)
+retriever = db.as_retriever()
+docs = retriever.get_relevant_documents("what did he say about Mahatma Gandhi?")
+```
+We can also set a retrieval method that sets a similarity score threshold and only returns documents with a score above that threshold.
+
+```
+retriever = db.as_retriever(
+    search_type="similarity_score_threshold", search_kwargs={"score_threshold": 0.5}
+)
+docs = retriever.get_relevant_documents("what did he say about Mahatma Gandhi?")
+
+```
+Specifying top k
+You can also specify search kwargs like k to use when doing retrieval.
+
+retriever = db.as_retriever(search_kwargs={"k": 1})
+
+docs = retriever.get_relevant_documents("what did he say about Mahatma Gandhi?")
+len(docs)
+
+1
 
 ### Document loaders
 
