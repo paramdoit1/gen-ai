@@ -256,6 +256,8 @@ While zero-shot prompting enables quick and efficient responses without specific
 
 Zero-shot prompting involves generating a response without feeding the large language models any examples or prior context. This technique is ideal when you need quick answers to basic questions or general topics.
 
+ In zero-shot, we provide no labeled data to the model and expect the model to work on a completely new problem. For example, use ChatGPT for zero-shot prompting on new tasks by providing appropriate instructions. LLMs can adapt to unseen problems because they understand content from many resources. 
+
 ### Examples: ###
 * Can you describe Random Access Memory?
 * Classify the text into positive, neutral or negative:
@@ -266,15 +268,215 @@ Zero-shot prompting involves generating a response without feeding the large lan
 One-shot prompting is about extracting a response based on example or piece of context provided by the user.
 ![Few Shot](./../images/prompting/one-shot.jpg)
 
+```
+  {
+    'Question' : "How many t-shirts do we have left for Nike in XS size and white color?",
+     'SQLQuery' : "SELECT sum(stock_quantity) FROM t_shirts WHERE brand = 'Nike' AND color = 'White' AND size = 'XS'",
+     'SQLResult': "Result of the SQL query",
+     'Answer' : "91"
+     },
+    {
+     'Question': "How much is the total price of the inventory for all S-size t-shirts?",
+     'SQLQuery':"SELECT SUM(price*stock_quantity) FROM t_shirts WHERE size = 'S'",
+     'SQLResult': "Result of the SQL query",
+     'Answer': "22292"
+     },
+```
+
+```
+  example_prompt = PromptTemplate(
+            input_variables=["Question", "SQLQuery", "SQLResult","Answer",],
+            template="\nQuestion: {Question}\nSQLQuery: {SQLQuery}\nSQLResult: {SQLResult}\nAnswer: {Answer}",
+        )
+
+    few_shot_prompt = FewShotPromptTemplate(
+            example_selector=example_selector,
+            example_prompt=example_prompt,
+            prefix=_mysql_prompt,
+            suffix=PROMPT_SUFFIX,
+            input_variables=["input", "table_info", "top_k"], #These variables are used in the prefix and suffix
+        )
+    chain = SQLDatabaseChain.from_llm(llm, db, verbose=True, prompt=few_shot_prompt)
+
+```
+
+Unlike zero-shot, few-shot prompting involves providing a few labeled examples in the prompt. This differs from traditional few-shot learning, which entails fine-tuning the LLM with a few samples for a novel problem. This approach lessens the reliance on large labeled datasets by allowing models to swiftly adapt and produce precise predictions for new classes with a small number of labeled samples. This method is beneficial when gathering a sizable amount of labeled data for new classes takes time and effort.  
+
 ### Chain-of-Thought (CoT) Prompting
 chain-of-thought (CoT) prompting enables complex reasoning capabilities through intermediate reasoning steps. You can combine it with few-shot prompting to get better results on more complex tasks that require reasoning before responding.
+
+Four properties of the CoT approach:
+
+* The chain-of-thought prompting breaks down multi-step problems into intermediate steps, facilitating additional computation by your models whenever required. It is a great approach for intricate computational problems where traditional methods fail to compute.
+* This method provides insights into the model’s behavior, directing users on how it arrived at a specific conclusion and allowing them to correct or debug the path if the reasoning was wrong.
+* The CoT applies to computational tasks such as math word problems, symbolic manipulation, commonsense reasoning, and other NLP tasks.
+* CoT reasoning can be elicited in large ready-to-use language models by combining thought sequences into the examples of few-shot prompting.
 
 ### Example 1: ###
 ![Chain Of Thought](./../images/prompting/chain-of-thought.jpg)
 
 ### Example 2: ###
 #### Prompt: ####
-The odd numbers in this group add up to an even number: 4, 8, 9, 15, 12, 2, 1.A: Adding all the odd numbers (9, 15, 1) gives 25. The answer is False.The odd numbers in this group add up to an even number: 17,  10, 19, 4, 8, 12, 24.A: Adding all the odd numbers (17, 19) gives 36. The answer is True.The odd numbers in this group add up to an even number: 16,  11, 14, 4, 8, 13, 24.A: Adding all the odd numbers (11, 13) gives 24. The answer is True.The odd numbers in this group add up to an even number: 17,  9, 10, 12, 13, 4, 2.A: Adding all the odd numbers (17, 9, 13) gives 39. The answer is False.The odd numbers in this group add up to an even number: 15, 32, 5, 13, 82, 7, 1. A:
+The odd numbers in this group add up to an even number: 4, 8, 9, 15, 12, 2, 1.
+A: Adding all the odd numbers (9, 15, 1) gives 25. 
+The answer is False.
+The odd numbers in this group add up to an even number: 17,  10, 19, 4, 8, 12, 24.
+A: Adding all the odd numbers (17, 19) gives 36. 
+The answer is True.
+The odd numbers in this group add up to an even number: 16,  11, 14, 4, 8, 13, 24.
+A: Adding all the odd numbers (11, 13) gives 24. 
+The answer is True.
+The odd numbers in this group add up to an even number: 17,  9, 10, 12, 13, 4, 2.A: Adding all the odd numbers (17, 9, 13) gives 39. 
+The answer is False.
+The odd numbers in this group add up to an even number: 15, 32, 5, 13, 82, 7, 1. 
+A:
 
 #### Output: ####
 Adding all the odd numbers (15, 5, 13, 7, 1) gives 41. The answer is False.
+
+```
+from langchain.chains import LLMChain
+from langchain.llms import OpenAI
+from langchain.prompts import PromptTemplate
+from langchain.chat_models import ChatOpenAI
+
+
+template ="""
+Step1 :
+ 
+I have a problem related to {input}. Could you brainstorm three distinct solutions? Please consider a variety of factors such as {perfect_factors}
+A:
+"""
+
+prompt = PromptTemplate(
+    input_variables=["input","perfect_factors"],
+    template = template                      
+)
+
+chain1 = LLMChain(
+    llm=ChatOpenAI(temperature=0, model="gpt-4"),
+    prompt=prompt,
+    output_key="solutions"
+)
+
+template ="""
+Step 2:
+
+For each of the three proposed solutions, evaluate their potential. Consider their pros and cons, initial effort needed, implementation difficulty, potential challenges, and the expected outcomes. Assign a probability of success and a confidence level to each option based on these factors
+
+{solutions}
+
+A:"""
+
+prompt = PromptTemplate(
+    input_variables=["solutions"],
+    template = template                      
+)
+
+chain2 = LLMChain(
+    llm=ChatOpenAI(temperature=0, model="gpt-4"),
+    prompt=prompt,
+    output_key="review"
+)
+
+template ="""
+Step 3:
+
+For each solution, deepen the thought process. Generate potential scenarios, strategies for implementation, any necessary partnerships or resources, and how potential obstacles might be overcome. Also, consider any potential unexpected outcomes and how they might be handled.
+
+{review}
+
+A:"""
+
+prompt = PromptTemplate(
+    input_variables=["review"],
+    template = template                      
+)
+
+chain3 = LLMChain(
+    llm=ChatOpenAI(temperature=0, model="gpt-4"),
+    prompt=prompt,
+    output_key="deepen_thought_process"
+)
+
+template ="""
+Step 4:
+
+Based on the evaluations and scenarios, rank the solutions in order of promise. Provide a justification for each ranking and offer any final thoughts or considerations for each solution
+{deepen_thought_process}
+
+A:"""
+
+prompt = PromptTemplate(
+    input_variables=["deepen_thought_process"],
+    template = template                      
+)
+
+chain4 = LLMChain(
+    llm=ChatOpenAI(temperature=0, model="gpt-4"),
+    prompt=prompt,
+    output_key="ranked_solutions"
+)
+We connect the four chains using ‘SequentialChain’. The output of one chain becomes the input to the next chain.
+
+from langchain.chains import SequentialChain
+
+overall_chain = SequentialChain(
+    chains=[chain1, chain2, chain3, chain4],
+    input_variables=["input", "perfect_factors"],
+    output_variables=["ranked_solutions"],
+    verbose=True
+)
+
+print(overall_chain({"input":"human colonization of Mars", "perfect_factors":"The distance between Earth and Mars is very large, making regular resupply difficult"}))
+
+```
+
+
+```
+{
+    "input": "human colonization of Mars",
+    "perfect_factors": "The distance between Earth and Mars is very large, making regular resupply difficult",
+    "ranked_solutions": {
+        "Ranking_1": {
+            "Justification": "Using In-Situ Resource Utilization is the most promising solution due to its potential to provide the necessary resources for a Mars colony and reduce the need for resupply missions from Earth. The medium initial effort, implementation difficulty, and potential challenges are outweighed by the high probability of success and 70% confidence level.",
+            "In_Situ_Resource_Utilization_ISRU": {
+                "Pros": "This solution could provide the necessary resources for a Mars colony and reduce the need for resupply missions from Earth.",
+                "Cons": "ISRU is technically challenging and would require significant investment in research and development.",
+                "Initial_Effort": "Medium. This would require the development of new technology and the establishment of infrastructure on Mars.",
+                "Implementation_Difficulty": "Medium. ISRU is a complex task that requires advanced technology.",
+                "Potential_Challenges": "Technical difficulties, high costs.",
+                "Expected_Outcomes": "If successful, ISRU could provide a steady supply of resources for a Mars colony.",
+                "Probability_of_Success": "High. ISRU is already being tested by NASA and other space agencies.",
+                "Confidence_Level": "70%"
+            }
+        },
+        "Ranking_2": {
+            "Justification": "Building a self-sustaining colony is a promising solution due to its potential to make the Mars colony self-sufficient. However, the high initial effort, implementation difficulty, and potential challenges make it less promising than the first solution. The medium probability of success and 60% confidence level also contribute to its ranking.",
+            "Building_a_Self_Sustaining_Colony": {
+                "Pros": "This solution could make the Mars colony self-sufficient, reducing the need for resupply missions from Earth.",
+                "Cons": "Building a self-sustaining colony is a complex task that requires advanced technology and a lot of resources.",
+                "Initial_Effort": "High. This would require the development of new technology and the establishment of infrastructure on Mars.",
+                "Implementation_Difficulty": "High. Building a self-sustaining colony is a complex task that requires advanced technology.",
+                "Potential_Challenges": "Technical difficulties, high costs.",
+                "Expected_Outcomes": "If successful, a self-sustaining colony could reduce the need for resupply missions from Earth.",
+                "Probability_of_Success": "Medium. While there are significant challenges, there is also a lot of interest in building a self-sustaining colony on Mars.",
+                "Confidence_Level": "60%"
+            }
+        },
+        "Ranking_3": {
+            "Justification": "While asteroid mining has the potential to provide a steady supply of resources for a Mars colony, the high initial effort, implementation difficulty, and potential challenges make it a less promising solution compared to others. The medium probability of success and 50% confidence level also contribute to its lower ranking.",
+            "Terraforming_Mars": {
+                "Pros": "This solution could make Mars more habitable for humans, reducing the need for life support systems and making the colony more self-sufficient.",
+                "Cons": "Terraforming is a long-term process that could take centuries or even millennia. It would also require a massive amount of resources and energy.",
+                "Initial_Effort": "Extremely High. Terraforming would require a massive amount of resources and energy.",
+                "Implementation_Difficulty": "Extremely High. Terraforming is a long-term process that could take centuries or even millennia.",
+                "Potential_Challenges": "Technical difficulties, high costs, time scale.",
+                "Expected_Outcomes": "If successful, terraforming could make Mars more habitable for humans.",
+                "Probability_of_Success": "Low. Terraforming is a theoretical concept and has never been attempted before.",
+                "Confidence_Level": "20%"
+            }
+        }
+    }
+}
+```
