@@ -8,3 +8,5 @@
 [Large Language Models](./topics/LLM.md)
 
 [Vector Databases](./topics/vector_database.md)
+
+[LangChain Concepts](./topics/langchain_concepts.md)
