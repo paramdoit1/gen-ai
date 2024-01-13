@@ -1,5 +1,6 @@
 few_shots = [
-    {'Question' : "How many t-shirts do we have left for Nike in XS size and white color?",
+    {
+    'Question' : "How many t-shirts do we have left for Nike in XS size and white color?",
      'SQLQuery' : "SELECT sum(stock_quantity) FROM t_shirts WHERE brand = 'Nike' AND color = 'White' AND size = 'XS'",
      'SQLResult': "Result of the SQL query",
      'Answer' : "91"},

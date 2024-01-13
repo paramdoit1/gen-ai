@@ -19,7 +19,7 @@ response = llm('How are you today?')
 print(response)
 
 def create_vector_db():
-    loader = CSVLoader(file_path="codebasics_faqs.csv", source_column="prompt")
+    loader = CSVLoader(file_path="learning_center_faqs.csv", source_column="prompt")
     data = loader.load()
 
     vectordb = FAISS.from_documents(documents=data, embedding=instructor_embeddings)

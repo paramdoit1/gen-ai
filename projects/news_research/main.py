@@ -40,9 +40,8 @@ def load_vector_db():
     f3 = open('E:/mydocs/python/news_extract/files/news3.txt', "r")
     data2 = f2.read()
     data = data + data2
-    
+
     main_placeholder.text("Data Loading ....Started.... 💡⏱️⏱️")
-    print(data)
 
     text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
     pages = text_splitter.split_text(data)
@@ -51,7 +50,6 @@ def load_vector_db():
 
     main_placeholder.text("Text Splitter ...Started.... ⏰⏰⏰⏰")
     docs = text_splitter.create_documents(pages)
-    print(docs)
     main_placeholder.text("Embedding Vector Started Building...✅✅✅")
 
     vectordb = FAISS.from_documents(documents=docs, embedding=instructor_embeddings)
