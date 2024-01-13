@@ -11,3 +11,6 @@ The links for the Notes taken various Gen AI concepts is given below.
 
 The Links for simple projects created using Gen AI is given below.
 [Projects](./projects/README.md)
+
+The Tutorials related to Gen AI and Python is in below link.
+[Tutorials](./Tutorials)
