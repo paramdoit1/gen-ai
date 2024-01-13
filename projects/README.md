@@ -7,6 +7,4 @@
 
 [Course Q & A](./course_q_and_a/README.md)
 
-[Vector Databases](./topics/vector_database.md)
-
-[LangChain Concepts](./topics/langchain_concepts.md)
+[Restaurant Name generator](./restaurant_name_gen_streamlit)
