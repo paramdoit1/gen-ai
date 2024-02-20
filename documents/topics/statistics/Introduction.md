@@ -128,3 +128,4 @@ Example of a discrete variable is the number of people in a household for a hous
 - The number of workers in an office
 - The number of steps you take in a day
 - The number of babies born each day
+   
