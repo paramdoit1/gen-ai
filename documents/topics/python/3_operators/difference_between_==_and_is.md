@@ -94,3 +94,4 @@ When the variables on either side of an operator point at the exact same object,
 The ‘==’ is known as the equality operator.
 When the variables on either side have the exact same value, the == operator evaluation is true. Otherwise, it will evaluate as False.
 
+[Back](./README.md)

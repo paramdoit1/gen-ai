@@ -116,3 +116,6 @@ title()	Convert string to title case
 translate()	Modify string according to given translation mappings
 upper()	Converts all lowercase characters in a string into uppercase
 zfill()	Returns a copy of the string with ‘0’ characters padded to the left side of the string
+
+
+[Back](./README.md)

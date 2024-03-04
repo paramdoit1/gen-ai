@@ -113,3 +113,5 @@ NameError: name 'prive' is not defined. Did you mean: 'price'?
 
 Note that the statements before the erroneous statement are executed and then the error message appears. Thus it is now clear that Python script is executed in interpreted manner.
 
+
+[Back](./README.md)

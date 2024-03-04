@@ -333,6 +333,7 @@ Comparision Basis	Global Variable	Local Variable
 `Storage`	 A fixed location selected by the compiler	They are  kept on the stack
 `Value`	Once the value changes it is reflected throughout the code	once changed the variable don’t affect other functions of the program
 
+[Back](./README.md)
 
 
 

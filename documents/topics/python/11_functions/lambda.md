@@ -133,3 +133,5 @@ Define a list ‘my_list’ with some numbers.
 Use lambda function with filter to check whether a number in the list is even or not.
 Convert the filter object into a list using the list() function and store it in a new_list.
 Print the new list with odd numbers.
+
+[Back](./README.md)

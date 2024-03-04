@@ -16,3 +16,5 @@ print(type(true))
 <class 'bool'>
 <class 'bool'>
 ```
+
+[Back](./README.md)
