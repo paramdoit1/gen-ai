@@ -211,3 +211,5 @@ b1 = [4, 5, 6]
 a1.extend(b1)
 print('new list after append', a1)
 #new list after append [1, 2, 3, 4, 5, 6]
+
+  
