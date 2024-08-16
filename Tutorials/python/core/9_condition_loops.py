@@ -94,10 +94,10 @@ The value of i reached  5
 i = 0
 
 while (i<5):
- print('The value of i is : ', i)
  i = i + 1
  if (i ==2):
      continue
+ print('The value of i is : ', i)
 else:
     print(' The value of i reached ', i)
 
@@ -108,3 +108,136 @@ The value of i is :  3
 The value of i is :  4
 The value of i reached  5
 '''
+
+#Ending iteration with break statement when reached this iteration
+
+i = 0
+
+while (i<5):
+ if (i ==2):
+     break
+ print('The value of i is : ', i)
+ i = i + 1
+else:
+    print(' The value of i reached ', i)
+
+'''
+The value of i is :  0
+The value of i is :  1
+'''
+
+#For Loops
+x = ['apple', 'orange', 'banana']
+for item in x:
+    print(item)
+
+'''
+apple
+orange
+banana
+'''
+
+#For Loops for a string
+
+for y in 'Orange':
+    print(y)
+'''
+O
+r
+a
+n
+g
+e
+'''
+
+#break statement
+
+x = ['apple', 'orange', 'banana']
+for item in x:
+    if(item == 'orange'):
+        break
+    print(item)
+
+'''
+apple
+'''
+
+#Continue statement
+
+x = ['apple', 'orange', 'banana']
+for item in x:
+    if(item == 'orange'):
+        continue
+    print(item)
+
+'''
+apple
+banana
+'''
+
+for i in range(6):
+    print(i)
+
+'''
+0
+1
+2
+3
+4
+5
+'''
+
+for i in range(2,6):
+    print(i)
+'''
+2
+3
+4
+5
+'''
+
+for i in range(2,6, 2):
+    print(i)
+'''
+2
+4
+'''
+
+for i in range(6):
+    print(i)
+else:
+    print('Completed looping till 5')
+
+'''
+0
+1
+2
+3
+4
+5
+Completed looping till 5
+'''
+
+#Nested for loop
+adj = ['red', 'tasty','big']
+fruit = ['apple', 'orange', 'banana']
+
+for a in adj:
+    for b in fruit:
+        print(a,b)
+
+'''
+red apple
+red orange
+red banana
+tasty apple
+tasty orange
+tasty banana
+big apple
+big orange
+big banana
+'''
+
+#No content add pass to avoid error
+for i in [0,1,2]:
+    pass
