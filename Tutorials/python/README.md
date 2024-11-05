@@ -10,5 +10,5 @@
 
 
 
-[Back to Python main page](./../../README.md)
+[Back to Gen AI main page](./../../README.md)
 
