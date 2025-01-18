@@ -42,7 +42,7 @@ Email Spam detection. The model is trained on basis of millions of emails on dif
 
  * Simple Linear regression
  * Multiple linear regression
- * Support vector regression
+ * Support vector
  * Decision Tree Regression
  * Random Forest regression
  
