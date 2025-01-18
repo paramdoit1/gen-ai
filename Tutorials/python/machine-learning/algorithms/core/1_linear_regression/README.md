@@ -14,7 +14,7 @@ The primary objective when using linear regression is to locate the best fit lin
 
 The best fit line equation provides a straight line that represents the relationship between the dependent and independent variables.
 
-[Linear Regression](./images/Linear_regression.jpg)
+![Linear Regression](./images/Linear_regression.jpg)
 
 
 y = mx +b

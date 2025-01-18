@@ -2,7 +2,7 @@
 
 The random forest algorithm is a machine learning algorithm that combines the results of multiple decision trees to reach a single prediction. It's a supervised learning algorithm that's used to solve classification and regression problems. This approach helps improve the accuracy of predictions. Random Forest is based on ensemble learning.
 
-[Random Forest](./images/random_forest.jpg)
+![Random Forest](./images/random_forest.jpg)
 
 Ensemble learning refers to the approach of combining multiple ML models to produce a more accurate and robust prediction compared to any individual model
 

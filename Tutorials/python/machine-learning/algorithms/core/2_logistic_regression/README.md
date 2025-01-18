@@ -7,7 +7,7 @@ For example, we have two classes class 0 and class 1 , if value of logistic func
 
 The below logistic classfication uses sigmoid function, shows the user have insurance or not based on age.
 
-[Logistic Regression Example](./images/sigmoid_logistic_regression.jpg)
+![Logistic Regression Example](./images/sigmoid_logistic_regression.jpg)
 
 The S form curve is called Sigmoid function or logistic function.
 

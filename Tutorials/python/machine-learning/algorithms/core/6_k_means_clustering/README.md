@@ -18,7 +18,7 @@ The k-means clustering algorithm mainly performs two tasks:
 
 The below diagram explains the working of the K-means Clustering Algorithm:
 
-[K-Means Clustering](./images/k-means-clustering.jpg)
+![K-Means Clustering](./images/k-means-clustering.jpg)
 
 # How to choose the k value?
 The end result of the algorithm depends on the number of сlusters (k) that’s selected before running the algorithm. However, choosing the right k can be hard, with options varying based on the dataset and the user’s desired clustering resolution.
@@ -29,7 +29,7 @@ The most popular heuristic for this is the elbow method.
 
 Below you can see a graphical representation of the elbow method. We calculate the variance explained by different k values while looking for an “elbow” – a value after which higher k values do not influence the results significantly. This will be the best k value to use.
 
-[Elbow method](./images/elbow_method.jpg)
+![Elbow method](./images/elbow_method.jpg)
 
 Most commonly, Within Cluster Sum of Squares (WCSS) is used as the metric for explained variance in the elbow method. It calculates the sum of squares of distance from each centroid to each point in that centroid’s cluster.
 

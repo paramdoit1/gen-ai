@@ -4,7 +4,7 @@ A decision Tree is a hierarchial structure made up of root, branches, internal a
 
 The decision tree starts with a root node and feed into the internal nodes known as decision nodes. The leaf nodes represents all possible outcomes within the dataset. The tree like structure is used to make predictions by asking series of questions and each branch represents possible answer and final leaf nodes represents the predicted outcome.
 
-[Decision Tree](./images/decision_tree.jpg)
+![Decision Tree](./images/decision_tree.jpg)
 
 Hences steps are
 
@@ -21,12 +21,12 @@ Decision trees are simple if else statements. If it is true/false,  go to next n
 
 In the above diagram the tree will first ask what is the weather? Is it sunny, cloudy, or rainy? If yes then it will go to the next feature which is humidity and wind. It will again check if there is a strong wind or weak, if it’s a weak wind and it’s rainy then the person may go and play.
 
-[Determining to play or not](./images/play_or_not_decision.jpg)
+![Determining to play or not](./images/play_or_not_decision.jpg)
 
 
 ### Determining to accept offer or not based on different features.
 
-[Determining to play or not](./images/Accept_offer_or_not_decision_tree.jpg)
+![Determining to play or not](./images/Accept_offer_or_not_decision_tree.jpg)
 
 
 ## Factors to be considered in decision Tree
