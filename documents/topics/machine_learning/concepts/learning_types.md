@@ -132,3 +132,22 @@ The problem is as follows: We have an agent and a reward, with many hurdles in b
 ![Reinforcement Example](./images/reinforcement-example.jpg)
 
 The above image shows the robot, diamond, and fire. The goal of the robot is to get the reward that is the diamond and avoid the hurdles that are fired. The robot learns by trying all the possible paths and then choosing the path which gives him the reward with the least hurdles. Each right step will give the robot a reward and each wrong step will subtract the reward of the robot. The total reward will be calculated when it reaches the final reward that is the diamond. 
+
+#### Reinforcement Learning Algorithms
+##### Q Learning:
+Q-learning is a popular model-free reinforcement learning algorithm used in machine learning and artificial intelligence applications. It falls under the category of temporal difference learning techniques, in which an agent picks up new information by observing results, interacting with the environment, and getting feedback in the form of rewards.
+
+##### How Q Learning works
+Q-learning models engage in an iterative process where various components collaborate to train the model. This iterative procedure encompasses the agent exploring the environment and continuously updating the model based on this exploration.
+
+The key components of Q-learning include:
+
+Agents: Entities that operate within an environment, making decisions and taking actions.
+States: Variables that identify an agent’s current position in the environment.
+Actions: Operations undertaken by the agent in specific states.
+Rewards: Positive or negative responses provided to the agent based on its actions.
+Episodes: Instances where an agent concludes its actions, marking the end of an episode.
+Q-values: Metrics used to evaluate actions at specific states.
+
+#### Q-table
+The Q-table is a repository of rewards associated with optimal actions for each state in a given environment. It serves as a guide for the agent, helping it determine which actions are likely to yield the best outcomes. As the agent interacts with the environment, the Q-table is dynamically updated to reflect the agent’s evolving understanding, enabling more informed decision-making.
