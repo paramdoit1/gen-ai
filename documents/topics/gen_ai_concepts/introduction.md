@@ -1,40 +1,5 @@
 ## introduction to Generative AI
 
-### Artificial Intelligence(AI):
-
-AI is used to build machines that have the ability to mimic human behavior, making decisions equal or surpassing human ability. The ability includes decision making, data analysis, and language translation.
-
-AI is the umbrella term covering variety of subfields like
-* Machine Learning
-* Natural Language Processing
-* Robotics
-* Expert Systems and so on.
-
-### Machine Learning:
-Machine learning is a subfield of Ai that uses algorithms trained on data to produce models that can perform a variety of complex tasks. ML learns through the data.
-
-##### Example:
-Using Machine learning, to detect and prevent fraud and cyber security attacks. 
-Troubleshooting a problem online with a chat bot, which directs to appropriate resources, based on user responses.
-
-Three main groups of algorithms in machine learning
-* Supervised Learning
-* Unsupervised learning
-* Reinforcement Learning
-
-#### Supervised Learning:
-We need to provide label data for the system to learn or train .Once trained, the new images are fed into the system for prediction and determine the accuracy of the model.
-
-#### Unsupervised Learning:
-Discovery of new patterns. Clustering of customers into groups based on similarities. The groups did not exist before and were created based on properties.
-
-![Machine Learning Type](./../images/introduction/unsupervised-learning.jpg)
-
-#### Reinforcement Learning:
-Area of machine learning where the agent learns by trial/error and by awards. Given positive reward for the correct action and negative reward for incorrect actions. Agent is not given instructions on how to perform the task and instead learns by trial and error.
-
-Teach robots how to walk by rewarding them for the correct step and punishing them for incorrect steps. Also, baby learning to walk is an example. If it falls, it feels the pain which is a negative reward and when it goes forward it feels the joy which is a positive reward.
-
 ### Deep Learning:
 
 It is a subset of machine learning that uses several layers with neural networks to do some of the most complex ML tasks without human intervention.
