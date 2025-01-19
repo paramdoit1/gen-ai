@@ -61,21 +61,64 @@ Multinomial Naive Bayes is used when features represent the frequency of terms (
 ### Bernoulli Naive Bayes
 Bernoulli Naive Bayes deals with binary features, where each feature indicates whether a word appears or not in a document. It is suited for scenarios where the presence or absence of terms is more relevant than their frequency. Both models are widely used in document classification tasks
 
-### Advantages of Naive Bayes Classifier
+## Advantages of Naive Bayes Classifier
 * Easy to implement and computationally efficient.
 * Effective in cases with a large number of features.
 * Performs well even with limited training data.
 * It performs well in the presence of categorical features.
 * For numerical features data is assumed to come from normal distributions
 
-### Disadvantages of Naive Bayes Classifier
+## Disadvantages of Naive Bayes Classifier
 * Assumes that features are independent, which may not always hold in real-world data.
 * Can be influenced by irrelevant attributes.
 May assign zero probability to unseen events, leading to poor generalization.
 
-### Applications of Naive Bayes Classifier
+## Applications of Naive Bayes Classifier
 * Spam Email Filtering: Classifies emails as spam or non-spam based on features.
 * Text Classification: Used in sentiment analysis, document categorization, and topic classification.
 * Medical Diagnosis: Helps in predicting the likelihood of a disease based on symptoms.
 * Credit Scoring: Evaluates creditworthiness of individuals for loan approval.
 * Weather Prediction: Classifies weather conditions based on various factors.
+
+## How Naive Bayes Classifier Works?
+Let’s understand the working of Naive Bayes through an example. Given an example of weather conditions and playing sports. You need to calculate the probability of playing sports. Now, you need to classify whether players will play or not, based on the weather condition.
+
+First Approach (In case of a single feature)
+Naive Bayes classifier calculates the probability of an event in the following steps:
+
+Step 1: Calculate the prior probability for given class labels
+Step 2: Find Likelihood probability with each attribute for each class
+Step 3: Put these value in Bayes Formula and calculate posterior probability.
+Step 4: See which class has a higher probability, given the input belongs to the higher probability class.
+
+For simplifying prior and posterior probability calculation, you can use the two tables frequency and likelihood tables. Both of these tables will help you to calculate the prior and posterior probability. The Frequency table contains the occurrence of labels for all features. There are two likelihood tables. Likelihood Table 1 is showing prior probabilities of labels and Likelihood Table 2 is showing the posterior probability.
+
+![Naive Bayes Example](./images/naive_bayes_data_set_example.jpg)
+
+Now suppose you want to calculate the probability of playing when the weather is overcast.
+
+Probability of playing:
+P(Yes | Overcast) = P(Overcast | Yes) P(Yes) / P (Overcast)
+
+Calculate Prior Probabilities:
+P(Overcast) = 4/14 = 0.29
+P(Yes)= 9/14 = 0.64
+
+Calculate Posterior Probabilities:
+P(Overcast|Yes) = 4/9 = 0.44
+
+Probability of not playing:
+P(No|Overcast) = P(Overcast | No) P(No) / P (Overcast) 
+
+Calculate Prior Probabilities:
+P(Overcast) = 4/14 = 0.29
+P(No)= 5/14 = 0.36
+
+Calculate Posterior Probabilities:
+P(Overcast |No) = 0/9 = 0
+
+Put Prior and Posterior probabilities
+P (No | Overcast) = 0 * 0.36 / 0.29 = 0
+
+The probability of a 'Yes' class is higher.
+So you can determine here if the weather is overcast than players will play the sport.
