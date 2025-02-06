@@ -1,6 +1,7 @@
 # Python
 
 ## Table Of Contents
+
 [Introduction](./1_introduction/README.md)
 
 [Input and Output](./2_input_output/README.md)
@@ -29,7 +30,8 @@
 
 [File Handling](./14_file_handling/README.md)
 
-
-
 ## References:
+
 https://www.geeksforgeeks.org/
+
+[Back to Gen AI main page](./../README.md)
