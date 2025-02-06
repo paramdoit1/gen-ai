@@ -14,6 +14,4 @@
 
 [Native Bayes](./9_native_bayes/README.md)
 
-
 [Back to Gen AI main page](./../../README.md)
-
